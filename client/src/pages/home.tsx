@@ -78,10 +78,10 @@ export default function Home() {
             whileHover={{ y: -4 }}
             className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-total" className="border-0 bg-[#f3f0ff] dark:bg-[#2d2640] shadow-sm hover:shadow-md transition-shadow">
+            <Card data-testid="card-stat-total" className="border border-white/20 dark:border-white/10 bg-gradient-to-br from-[#f3f0ff]/80 to-[#e9e3ff]/60 dark:from-[#2d2640]/80 dark:to-[#3d3550]/60 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Total Complaints</CardTitle>
-                <div className="p-2.5 rounded-full bg-[#e9e3ff] dark:bg-[#3d3550]">
+                <div className="p-2.5 rounded-full bg-[#e9e3ff]/70 dark:bg-[#3d3550]/70 backdrop-blur-sm shadow-md">
                   <FileText className="h-4 w-4 text-[#8b5cf6]" />
                 </div>
               </CardHeader>
@@ -106,10 +106,10 @@ export default function Home() {
             whileHover={{ y: -4 }}
             className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-resolved" className="border-0 bg-[#d1fae5] dark:bg-[#1e3a32] shadow-sm hover:shadow-md transition-shadow">
+            <Card data-testid="card-stat-resolved" className="border border-white/20 dark:border-white/10 bg-gradient-to-br from-[#d1fae5]/80 to-[#a7f3d0]/60 dark:from-[#1e3a32]/80 dark:to-[#2d4f43]/60 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Resolved</CardTitle>
-                <div className="p-2.5 rounded-full bg-[#a7f3d0] dark:bg-[#2d4f43]">
+                <div className="p-2.5 rounded-full bg-[#a7f3d0]/70 dark:bg-[#2d4f43]/70 backdrop-blur-sm shadow-md">
                   <CheckCircle2 className="h-4 w-4 text-[#10b981]" />
                 </div>
               </CardHeader>
@@ -134,10 +134,10 @@ export default function Home() {
             whileHover={{ y: -4 }}
             className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-pending" className="border-0 bg-[#fef3c7] dark:bg-[#3d3420] shadow-sm hover:shadow-md transition-shadow">
+            <Card data-testid="card-stat-pending" className="border border-white/20 dark:border-white/10 bg-gradient-to-br from-[#fef3c7]/80 to-[#fde68a]/60 dark:from-[#3d3420]/80 dark:to-[#4d4430]/60 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
-                <div className="p-2.5 rounded-full bg-[#fde68a] dark:bg-[#4d4430]">
+                <div className="p-2.5 rounded-full bg-[#fde68a]/70 dark:bg-[#4d4430]/70 backdrop-blur-sm shadow-md">
                   <Clock className="h-4 w-4 text-[#f59e0b]" />
                 </div>
               </CardHeader>
@@ -162,10 +162,10 @@ export default function Home() {
             whileHover={{ y: -4 }}
             className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-rate" className="border-0 bg-[#fce7f3] dark:bg-[#3d2038] shadow-sm hover:shadow-md transition-shadow">
+            <Card data-testid="card-stat-rate" className="border border-white/20 dark:border-white/10 bg-gradient-to-br from-[#fce7f3]/80 to-[#fbcfe8]/60 dark:from-[#3d2038]/80 dark:to-[#4d3048]/60 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Resolution Rate</CardTitle>
-                <div className="p-2.5 rounded-full bg-[#fbcfe8] dark:bg-[#4d3048]">
+                <div className="p-2.5 rounded-full bg-[#fbcfe8]/70 dark:bg-[#4d3048]/70 backdrop-blur-sm shadow-md">
                   <TrendingUp className="h-4 w-4 text-[#ec4899]" />
                 </div>
               </CardHeader>
