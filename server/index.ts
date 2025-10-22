@@ -75,8 +75,14 @@ app.use((req, res, next) => {
 
 (async () => {
   // Initialize admin password in database
-  const { initializeAdminPassword } = await import("./auth");
-  await initializeAdminPassword();
+  try {
+    console.log("Starting admin password initialization...");
+    const { initializeAdminPassword } = await import("./auth");
+    await initializeAdminPassword();
+    console.log("Admin password initialization complete");
+  } catch (error) {
+    console.error("Error initializing admin password:", error);
+  }
 
   const server = await registerRoutes(app);
 

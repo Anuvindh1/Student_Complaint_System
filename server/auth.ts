@@ -32,6 +32,10 @@ export async function loginAdmin(req: Request, res: Response) {
   }
 
   const adminPassword = await storage.getAdminPassword();
+  console.log("Login attempt:");
+  console.log("  - Received password length:", password.length);
+  console.log("  - Stored password length:", adminPassword?.length);
+  console.log("  - Passwords match:", password === adminPassword);
   
   if (!adminPassword) {
     return res.status(500).json({ error: "Admin password not configured" });
