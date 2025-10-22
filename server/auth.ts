@@ -9,12 +9,18 @@ declare module "express-session" {
 
 // Simple admin authentication - password stored server-side only
 // ADMIN_PASSWORD must be set via environment variable for security
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.NODE_ENV === "production" ? undefined : "admin123");
 
 if (!ADMIN_PASSWORD) {
   console.error("FATAL: ADMIN_PASSWORD environment variable is not set!");
   console.error("Please set ADMIN_PASSWORD in your environment to enable admin access.");
   process.exit(1);
+}
+
+// Warn if using default password in development
+if (ADMIN_PASSWORD === "admin123" && process.env.NODE_ENV !== "production") {
+  console.warn("⚠️  WARNING: Using default admin password 'admin123' for development.");
+  console.warn("⚠️  Set ADMIN_PASSWORD environment variable for production use.");
 }
 
 export function loginAdmin(req: Request, res: Response) {
