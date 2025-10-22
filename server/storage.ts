@@ -2,15 +2,12 @@ import { type Complaint, type InsertComplaint, type UpdateComplaintStatus } from
 import { randomUUID } from "crypto";
 
 export interface IStorage {
-  // Complaint operations
   getAllComplaints(): Promise<Complaint[]>;
   getComplaintById(id: string): Promise<Complaint | undefined>;
   createComplaint(complaint: InsertComplaint): Promise<Complaint>;
   updateComplaintStatus(id: string, status: UpdateComplaintStatus): Promise<Complaint | undefined>;
   deleteComplaint(id: string): Promise<boolean>;
   cleanupOldResolvedComplaints(daysOld: number): Promise<number>;
-  
-  // Admin password operations
   getAdminPassword(): Promise<string | undefined>;
   setAdminPassword(password: string): Promise<void>;
 }
@@ -101,10 +98,8 @@ export class MemStorage implements IStorage {
   }
 }
 
-// Import Firebase storage implementation
 import { FirebaseStorage } from "./firebase-storage";
 
-// Use Firebase storage in production, MemStorage for testing
 export const storage = process.env.FIREBASE_PROJECT_ID 
   ? new FirebaseStorage() 
   : new MemStorage();

@@ -1,7 +1,6 @@
 import { type Complaint, type InsertComplaint, type UpdateComplaintStatus } from "@shared/schema";
 import type { IStorage } from "./storage";
 
-// Firebase Web SDK (client SDK) for server-side use
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
   getFirestore,
@@ -24,7 +23,6 @@ let app: FirebaseApp;
 let db: Firestore;
 
 function initializeFirebase(): Firestore {
-  // Check if required Firebase env vars are present
   const hasFirebaseConfig = 
     process.env.FIREBASE_API_KEY &&
     process.env.FIREBASE_PROJECT_ID &&

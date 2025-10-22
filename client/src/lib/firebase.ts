@@ -4,9 +4,7 @@ import { getFirestore, type Firestore } from 'firebase/firestore';
 let app: FirebaseApp | null = null;
 let db: Firestore | null = null;
 
-// Initialize Firebase only if all required environment variables are present
 export function initializeFirebase(): { app: FirebaseApp | null; db: Firestore | null } {
-  // Check if Firebase credentials are available
   const hasFirebaseConfig = 
     import.meta.env.VITE_FIREBASE_API_KEY &&
     import.meta.env.VITE_FIREBASE_PROJECT_ID &&
@@ -39,6 +37,5 @@ export function initializeFirebase(): { app: FirebaseApp | null; db: Firestore |
   return { app, db };
 }
 
-// Initialize on module load (but gracefully handle failures)
 const firebase = initializeFirebase();
 export { firebase };

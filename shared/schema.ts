@@ -3,11 +3,9 @@ import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// Complaint statuses
 export const complaintStatuses = ["pending", "resolved"] as const;
 export type ComplaintStatus = typeof complaintStatuses[number];
 
-// B.Tech departments
 export const departments = [
   "Computer Science Engineering (CSE)",
   "Electronics & Communication Engineering (ECE)",
@@ -23,7 +21,6 @@ export const departments = [
 
 export type Department = typeof departments[number];
 
-// Complaints table schema
 export const complaints = pgTable("complaints", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   studentName: text("student_name").notNull(),
@@ -35,7 +32,6 @@ export const complaints = pgTable("complaints", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-// Insert schema for creating complaints
 export const insertComplaintSchema = createInsertSchema(complaints, {
   studentName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
   department: z.enum(departments, { required_error: "Please select a department" }),
@@ -48,7 +44,6 @@ export const insertComplaintSchema = createInsertSchema(complaints, {
   updatedAt: true,
 });
 
-// Update status schema
 export const updateComplaintStatusSchema = z.object({
   status: z.enum(complaintStatuses),
 });
@@ -57,7 +52,6 @@ export type InsertComplaint = z.infer<typeof insertComplaintSchema>;
 export type Complaint = typeof complaints.$inferSelect;
 export type UpdateComplaintStatus = z.infer<typeof updateComplaintStatusSchema>;
 
-// User/Admin tracking (for simple admin access control)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),

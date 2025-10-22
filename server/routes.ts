@@ -7,11 +7,10 @@ import { fromZodError } from "zod-validation-error";
 import { loginAdmin, logoutAdmin, checkAdminAuth, requireAdmin } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Admin authentication routes
   app.post("/api/admin/login", loginAdmin);
   app.post("/api/admin/logout", logoutAdmin);
   app.get("/api/admin/check", checkAdminAuth);
-  // Get all complaints
+  
   app.get("/api/complaints", async (req, res) => {
     try {
       const complaints = await storage.getAllComplaints();
@@ -22,7 +21,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get single complaint by ID
   app.get("/api/complaints/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -39,7 +37,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Create new complaint
   app.post("/api/complaints", async (req, res) => {
     try {
       const validationResult = insertComplaintSchema.safeParse(req.body);
@@ -60,7 +57,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Update complaint status (admin only - protected route)
   app.patch("/api/complaints/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
@@ -91,7 +87,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Delete complaint (admin only - protected route)
   app.delete("/api/complaints/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;

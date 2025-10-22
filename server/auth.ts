@@ -1,14 +1,12 @@
 import type { Request, Response, NextFunction } from "express";
 import { storage } from "./storage";
 
-// Extend Express Session type
 declare module "express-session" {
   interface SessionData {
     isAdmin: boolean;
   }
 }
 
-// Initialize default admin password if not set in database
 export async function initializeAdminPassword() {
   const existingPassword = await storage.getAdminPassword();
   
@@ -62,7 +60,6 @@ export function checkAdminAuth(req: Request, res: Response) {
   res.json({ isAuthenticated: req.session.isAdmin === true });
 }
 
-// Middleware to protect admin routes
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   if (req.session.isAdmin === true) {
     return next();
