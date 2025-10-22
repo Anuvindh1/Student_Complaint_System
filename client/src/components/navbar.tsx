@@ -19,37 +19,54 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 z-50 w-full border-b glass-card shadow-lg"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
           <Link href="/">
-            <div className="flex items-center gap-3 cursor-pointer hover-elevate rounded-md px-3 py-2 -ml-3 transition-all" data-testid="link-logo">
-              <div className="p-1.5 bg-primary rounded-md">
+            <motion.div 
+              className="flex items-center gap-3 cursor-pointer hover-elevate rounded-md px-3 py-2 -ml-3 transition-all" 
+              data-testid="link-logo"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.div 
+                className="p-1.5 bg-gradient-to-br from-primary to-chart-1 rounded-lg shadow-md"
+                whileHover={{ rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 <FileText className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span className="font-bold text-lg hidden sm:inline-block">
+              </motion.div>
+              <span className="font-bold text-lg hidden sm:inline-block bg-gradient-to-r from-primary to-chart-5 bg-clip-text text-transparent">
                 Complaint Portal
               </span>
-            </div>
+            </motion.div>
           </Link>
 
           <div className="flex items-center gap-2">
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = location === item.path;
 
               return (
                 <Link key={item.path} href={item.path}>
-                  <Button
-                    variant={isActive ? "secondary" : "ghost"}
-                    size="sm"
-                    className="gap-2"
-                    data-testid={`button-nav-${item.label.toLowerCase()}`}
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{item.label}</span>
-                  </Button>
+                    <Button
+                      variant={isActive ? "secondary" : "ghost"}
+                      size="sm"
+                      className="gap-2 shadow-sm"
+                      data-testid={`button-nav-${item.label.toLowerCase()}`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span className="hidden sm:inline">{item.label}</span>
+                    </Button>
+                  </motion.div>
                 </Link>
               );
             })}

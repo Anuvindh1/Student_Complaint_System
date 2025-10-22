@@ -23,7 +23,11 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-chart-2/5"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-chart-2/10"></div>
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-chart-2/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -31,7 +35,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <Badge variant="secondary" className="mb-4" data-testid="badge-hero">
+            <Badge variant="secondary" className="mb-4 shimmer" data-testid="badge-hero">
               <FileText className="w-3 h-3 mr-1" />
               Open Source Platform
             </Badge>
@@ -71,23 +75,28 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.05, rotateZ: 1 }}
             className="relative overflow-hidden rounded-xl"
           >
-            <Card data-testid="card-stat-total" className="border-2 bg-gradient-to-br from-primary/20 via-primary/10 to-background backdrop-blur-sm">
+            <Card data-testid="card-stat-total" className="glass-card hover-lift border-2 bg-gradient-to-br from-primary/25 via-primary/15 to-background backdrop-blur-xl shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
                 <CardTitle className="text-sm font-semibold">Total Complaints</CardTitle>
-                <div className="p-2 rounded-lg bg-primary/20">
+                <motion.div 
+                  className="p-2 rounded-lg bg-primary/30 backdrop-blur-sm"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <FileText className="h-5 w-5 text-primary" />
-                </div>
+                </motion.div>
               </CardHeader>
               <CardContent>
                 <motion.div 
-                  className="text-4xl font-bold bg-gradient-to-br from-primary to-chart-4 bg-clip-text text-transparent" 
+                  className="text-5xl font-bold bg-gradient-to-br from-primary via-chart-4 to-chart-1 bg-clip-text text-transparent" 
                   data-testid="text-total-complaints"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
+                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : totalComplaints}
                 </motion.div>
@@ -102,23 +111,28 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.05, rotateZ: -1 }}
             className="relative overflow-hidden rounded-xl"
           >
-            <Card data-testid="card-stat-resolved" className="border-2 bg-gradient-to-br from-chart-2/20 via-chart-2/10 to-background backdrop-blur-sm">
+            <Card data-testid="card-stat-resolved" className="glass-card hover-lift border-2 bg-gradient-to-br from-chart-2/25 via-chart-2/15 to-background backdrop-blur-xl shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
                 <CardTitle className="text-sm font-semibold">Resolved</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-2/20">
+                <motion.div 
+                  className="p-2 rounded-lg bg-chart-2/30 backdrop-blur-sm"
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <CheckCircle2 className="h-5 w-5 text-chart-2" />
-                </div>
+                </motion.div>
               </CardHeader>
               <CardContent>
                 <motion.div 
-                  className="text-4xl font-bold text-chart-2" 
+                  className="text-5xl font-bold text-chart-2" 
                   data-testid="text-resolved-count"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
+                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : resolvedCount}
                 </motion.div>
@@ -133,23 +147,28 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.05, rotateZ: 1 }}
             className="relative overflow-hidden rounded-xl"
           >
-            <Card data-testid="card-stat-pending" className="border-2 bg-gradient-to-br from-chart-3/20 via-chart-3/10 to-background backdrop-blur-sm">
+            <Card data-testid="card-stat-pending" className="glass-card hover-lift border-2 bg-gradient-to-br from-chart-3/25 via-chart-3/15 to-background backdrop-blur-xl shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
                 <CardTitle className="text-sm font-semibold">Pending</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-3/20">
+                <motion.div 
+                  className="p-2 rounded-lg bg-chart-3/30 backdrop-blur-sm"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <Clock className="h-5 w-5 text-chart-3" />
-                </div>
+                </motion.div>
               </CardHeader>
               <CardContent>
                 <motion.div 
-                  className="text-4xl font-bold text-chart-3" 
+                  className="text-5xl font-bold text-chart-3" 
                   data-testid="text-pending-count"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
+                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : pendingCount}
                 </motion.div>
@@ -164,23 +183,28 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.05, rotateZ: -1 }}
             className="relative overflow-hidden rounded-xl"
           >
-            <Card data-testid="card-stat-rate" className="border-2 bg-gradient-to-br from-chart-5/20 via-chart-5/10 to-background backdrop-blur-sm">
+            <Card data-testid="card-stat-rate" className="glass-card hover-lift border-2 bg-gradient-to-br from-chart-5/25 via-chart-5/15 to-background backdrop-blur-xl shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
                 <CardTitle className="text-sm font-semibold">Resolution Rate</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-5/20">
+                <motion.div 
+                  className="p-2 rounded-lg bg-chart-5/30 backdrop-blur-sm"
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <TrendingUp className="h-5 w-5 text-chart-5" />
-                </div>
+                </motion.div>
               </CardHeader>
               <CardContent>
                 <motion.div 
-                  className="text-4xl font-bold bg-gradient-to-br from-chart-5 to-primary bg-clip-text text-transparent" 
+                  className="text-5xl font-bold bg-gradient-to-br from-chart-5 via-primary to-chart-1 bg-clip-text text-transparent" 
                   data-testid="text-resolution-rate"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.7 }}
+                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : `${resolutionRate}%`}
                 </motion.div>
@@ -236,10 +260,10 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 * idx }}
                 >
-                  <Card className="hover-elevate transition-all duration-300" data-testid={`card-complaint-${complaint.id}`}>
+                  <Card className="glass-card hover-lift transition-all duration-300 border-2 shadow-lg" data-testid={`card-complaint-${complaint.id}`}>
                     <CardHeader>
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <Badge variant={complaint.status === "resolved" ? "default" : "secondary"} className="shrink-0">
+                        <Badge variant={complaint.status === "resolved" ? "default" : "secondary"} className="shrink-0 shadow-md">
                           {complaint.status === "resolved" ? (
                             <CheckCircle2 className="w-3 h-3 mr-1" />
                           ) : (
@@ -247,9 +271,12 @@ export default function Home() {
                           )}
                           {complaint.status}
                         </Badge>
-                        <span className="text-xs text-muted-foreground font-mono">
+                        <motion.span 
+                          className="text-xs text-muted-foreground font-mono bg-primary/10 px-2 py-1 rounded-md"
+                          whileHover={{ scale: 1.05 }}
+                        >
                           #{complaint.id.slice(0, 8)}
-                        </span>
+                        </motion.span>
                       </div>
                       <CardTitle className="text-lg line-clamp-2">{complaint.issueTitle}</CardTitle>
                       <CardDescription>{complaint.department}</CardDescription>
@@ -259,7 +286,7 @@ export default function Home() {
                         {complaint.description}
                       </p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{complaint.studentName}</span>
+                        <span className="font-medium">{complaint.studentName}</span>
                         <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
                       </div>
                     </CardContent>
@@ -287,18 +314,36 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-gradient-to-br from-primary/10 via-background to-chart-2/10 rounded-xl p-8 sm:p-12 text-center border"
+            className="glass-card bg-gradient-to-br from-primary/15 via-background to-chart-2/15 rounded-2xl p-8 sm:p-12 text-center border-2 shadow-2xl relative overflow-hidden"
           >
-            <h2 className="text-3xl font-bold mb-4">Have a Concern?</h2>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Your feedback matters. Submit your complaint and help us improve the campus experience 
-              for everyone. All submissions are reviewed by the administration.
-            </p>
-            <Link href="/submit">
-              <Button size="lg" data-testid="button-submit-cta">
-                Submit Your Complaint
-              </Button>
-            </Link>
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/30 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-chart-2/30 rounded-full blur-3xl"></div>
+            </div>
+            <div className="relative z-10">
+              <motion.h2 
+                className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-chart-5 to-chart-2 bg-clip-text text-transparent"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                Have a Concern?
+              </motion.h2>
+              <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg">
+                Your feedback matters. Submit your complaint and help us improve the campus experience 
+                for everyone. All submissions are reviewed by the administration.
+              </p>
+              <Link href="/submit">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button size="lg" className="shadow-xl hover:shadow-2xl" data-testid="button-submit-cta">
+                    Submit Your Complaint
+                  </Button>
+                </motion.div>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
