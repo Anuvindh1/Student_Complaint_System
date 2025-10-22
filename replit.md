@@ -84,7 +84,13 @@ This is a comprehensive complaint management system that allows students to subm
 
 ## Environment Variables
 
-The following secrets are required and already configured:
+### Required Secrets
+
+**Admin Authentication:**
+- `ADMIN_PASSWORD` - **REQUIRED** for admin panel access. Set a strong password.
+- `SESSION_SECRET` - Required in production for secure session management. Auto-generated in development.
+
+**Firebase Configuration (Optional):**
 - `FIREBASE_API_KEY`
 - `FIREBASE_AUTH_DOMAIN`
 - `FIREBASE_PROJECT_ID`
@@ -92,7 +98,9 @@ The following secrets are required and already configured:
 - `FIREBASE_MESSAGING_SENDER_ID`
 - `FIREBASE_APP_ID`
 
-These are automatically exposed to Vite with the `VITE_` prefix.
+If Firebase credentials are not provided, the application will automatically use in-memory storage (MemStorage) which stores data temporarily during the session. For persistent data storage, enable Firestore in your Firebase Console and provide the credentials above.
+
+Firebase variables are automatically exposed to Vite with the `VITE_` prefix for client-side use.
 
 ## Pages
 
@@ -109,22 +117,52 @@ These are automatically exposed to Vite with the `VITE_` prefix.
 - Accessible UI with proper ARIA labels
 - Professional color scheme with semantic status indicators
 
+## Security
+
+### Admin Authentication
+- Admin access requires password authentication via backend API
+- Passwords never stored or transmitted in client-side code
+- Session-based authentication with httpOnly cookies
+- Protected routes enforce admin privileges server-side
+- ADMIN_PASSWORD environment variable must be set for security
+
+### Data Privacy
+- Complaint data stored securely in Firebase Firestore or in-memory
+- No sensitive information exposed in client bundles
+- All admin operations require valid authentication session
+
+## Production Deployment Checklist
+
+1. **Set Required Environment Variables:**
+   - `ADMIN_PASSWORD` - Set a strong admin password
+   - `SESSION_SECRET` - Generate a random secret (32+ characters)
+   - Firebase credentials (if using Firestore for persistence)
+
+2. **Enable Firestore (Optional but Recommended):**
+   - Go to Firebase Console → Firestore Database
+   - Create database (start in production mode for production apps)
+   - Set security rules to protect data
+
+3. **Test Admin Flow:**
+   - Navigate to /admin
+   - Login with ADMIN_PASSWORD
+   - Verify status update functionality
+   - Test logout
+
+4. **Verify Complaint Submission:**
+   - Submit a test complaint via /submit
+   - Verify it appears in /complaints
+   - Verify admin can update status
+
 ## Recent Changes
 
-- **2025-10-22**: Initial project setup
-  - Implemented complete frontend with all pages
-  - Created data schemas for complaints
-  - Set up Firebase integration structure
-  - Designed theme system with dark mode
-  - Added navigation and routing
-  - Implemented form validation
-  - Created admin authentication flow
-  - Added animations and transitions throughout
-
-## Next Steps
-
-- Implement Firebase backend integration
-- Connect frontend to Firestore
-- Test all user flows end-to-end
-- Add error boundaries
-- Optimize performance
+- **2025-10-22**: Complete MVP implementation
+  - ✅ Implemented secure backend authentication with sessions
+  - ✅ Created all frontend pages with modern UI/UX
+  - ✅ Integrated Firebase Firestore with fallback to MemStorage
+  - ✅ Built responsive design with dark mode support
+  - ✅ Added comprehensive form validation
+  - ✅ Implemented protected admin routes
+  - ✅ Added smooth animations and transitions
+  - ✅ Created filtering and search functionality
+  - ✅ Tested all security measures
