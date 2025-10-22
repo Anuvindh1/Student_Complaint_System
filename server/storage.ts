@@ -9,13 +9,19 @@ export interface IStorage {
   updateComplaintStatus(id: string, status: UpdateComplaintStatus): Promise<Complaint | undefined>;
   deleteComplaint(id: string): Promise<boolean>;
   cleanupOldResolvedComplaints(daysOld: number): Promise<number>;
+  
+  // Admin password operations
+  getAdminPassword(): Promise<string | undefined>;
+  setAdminPassword(password: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
   private complaints: Map<string, Complaint>;
+  private adminPassword: string | undefined;
 
   constructor() {
     this.complaints = new Map();
+    this.adminPassword = undefined;
   }
 
   async getAllComplaints(): Promise<Complaint[]> {
@@ -84,6 +90,14 @@ export class MemStorage implements IStorage {
     });
     
     return deletedCount;
+  }
+
+  async getAdminPassword(): Promise<string | undefined> {
+    return this.adminPassword;
+  }
+
+  async setAdminPassword(password: string): Promise<void> {
+    this.adminPassword = password;
   }
 }
 

@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import { storage } from "./storage";
 
 // Extend Express Session type
 declare module "express-session" {
@@ -7,30 +8,36 @@ declare module "express-session" {
   }
 }
 
-// Simple admin authentication - password stored server-side only
-// ADMIN_PASSWORD must be set via environment variable for security
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.NODE_ENV === "production" ? undefined : "admin123");
-
-if (!ADMIN_PASSWORD) {
-  console.error("FATAL: ADMIN_PASSWORD environment variable is not set!");
-  console.error("Please set ADMIN_PASSWORD in your environment to enable admin access.");
-  process.exit(1);
+// Initialize default admin password if not set in database
+export async function initializeAdminPassword() {
+  const existingPassword = await storage.getAdminPassword();
+  
+  if (!existingPassword) {
+    const defaultPassword = process.env.ADMIN_PASSWORD || "admin123";
+    await storage.setAdminPassword(defaultPassword);
+    console.log("✓ Admin password initialized in database");
+    
+    if (defaultPassword === "admin123") {
+      console.warn("⚠️  WARNING: Using default admin password 'admin123'.");
+      console.warn("⚠️  You can change it in Firebase Console: settings/admin document.");
+    }
+  }
 }
 
-// Warn if using default password in development
-if (ADMIN_PASSWORD === "admin123" && process.env.NODE_ENV !== "production") {
-  console.warn("⚠️  WARNING: Using default admin password 'admin123' for development.");
-  console.warn("⚠️  Set ADMIN_PASSWORD environment variable for production use.");
-}
-
-export function loginAdmin(req: Request, res: Response) {
+export async function loginAdmin(req: Request, res: Response) {
   const { password } = req.body;
 
   if (!password) {
     return res.status(400).json({ error: "Password required" });
   }
 
-  if (password === ADMIN_PASSWORD) {
+  const adminPassword = await storage.getAdminPassword();
+  
+  if (!adminPassword) {
+    return res.status(500).json({ error: "Admin password not configured" });
+  }
+
+  if (password === adminPassword) {
     req.session.isAdmin = true;
     return res.json({ success: true, message: "Authenticated successfully" });
   }

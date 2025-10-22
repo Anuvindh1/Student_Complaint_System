@@ -10,6 +10,7 @@ import {
   getDocs,
   getDoc,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -55,6 +56,7 @@ function initializeFirebase(): Firestore {
 export class FirebaseStorage implements IStorage {
   private db: Firestore;
   private complaintsCollection = "complaints";
+  private settingsCollection = "settings";
 
   constructor() {
     this.db = initializeFirebase();
@@ -222,6 +224,33 @@ export class FirebaseStorage implements IStorage {
     } catch (error) {
       console.error("Error cleaning up old complaints:", error);
       throw new Error("Failed to cleanup old complaints from database");
+    }
+  }
+
+  async getAdminPassword(): Promise<string | undefined> {
+    try {
+      const docRef = doc(this.db, this.settingsCollection, "admin");
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        return undefined;
+      }
+
+      const data = docSnap.data();
+      return data.password as string | undefined;
+    } catch (error) {
+      console.error("Error getting admin password:", error);
+      return undefined;
+    }
+  }
+
+  async setAdminPassword(password: string): Promise<void> {
+    try {
+      const docRef = doc(this.db, this.settingsCollection, "admin");
+      await setDoc(docRef, { password }, { merge: true });
+    } catch (error) {
+      console.error("Error setting admin password:", error);
+      throw new Error("Failed to set admin password in database");
     }
   }
 }
