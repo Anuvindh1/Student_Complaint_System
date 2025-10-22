@@ -8,3 +8,16 @@ vite.config.ts.*
 .env.local
 .env.production
 .env.development
+
+# Logs
+*.log
+npm-debug.log*
+logs
+
+# Replit local state
+.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache
