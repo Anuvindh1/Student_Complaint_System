@@ -1,38 +1,74 @@
-import { type User, type InsertUser } from "@shared/schema";
+import { type Complaint, type InsertComplaint, type UpdateComplaintStatus } from "@shared/schema";
 import { randomUUID } from "crypto";
 
-// modify the interface with any CRUD methods
-// you might need
-
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Complaint operations
+  getAllComplaints(): Promise<Complaint[]>;
+  getComplaintById(id: string): Promise<Complaint | undefined>;
+  createComplaint(complaint: InsertComplaint): Promise<Complaint>;
+  updateComplaintStatus(id: string, status: UpdateComplaintStatus): Promise<Complaint | undefined>;
+  deleteComplaint(id: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private complaints: Map<string, Complaint>;
 
   constructor() {
-    this.users = new Map();
+    this.complaints = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
+  async getAllComplaints(): Promise<Complaint[]> {
+    return Array.from(this.complaints.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async getComplaintById(id: string): Promise<Complaint | undefined> {
+    return this.complaints.get(id);
+  }
+
+  async createComplaint(insertComplaint: InsertComplaint): Promise<Complaint> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const now = new Date();
+    const complaint: Complaint = {
+      ...insertComplaint,
+      id,
+      status: "pending",
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.complaints.set(id, complaint);
+    return complaint;
+  }
+
+  async updateComplaintStatus(
+    id: string,
+    statusUpdate: UpdateComplaintStatus
+  ): Promise<Complaint | undefined> {
+    const complaint = this.complaints.get(id);
+    if (!complaint) {
+      return undefined;
+    }
+
+    const updatedComplaint: Complaint = {
+      ...complaint,
+      status: statusUpdate.status,
+      updatedAt: new Date(),
+    };
+
+    this.complaints.set(id, updatedComplaint);
+    return updatedComplaint;
+  }
+
+  async deleteComplaint(id: string): Promise<boolean> {
+    return this.complaints.delete(id);
   }
 }
 
-export const storage = new MemStorage();
+// Import Firebase storage implementation
+import { FirebaseStorage } from "./firebase-storage";
+
+// Use Firebase storage in production, MemStorage for testing
+export const storage = process.env.FIREBASE_PROJECT_ID 
+  ? new FirebaseStorage() 
+  : new MemStorage();

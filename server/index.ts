@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import session from "express-session";
+import createMemoryStore from "memorystore";
 
 const app = express();
 
@@ -15,6 +17,31 @@ app.use(express.json({
   }
 }));
 app.use(express.urlencoded({ extended: false }));
+
+// Session configuration
+// SESSION_SECRET is required for production security
+const SESSION_SECRET = process.env.SESSION_SECRET;
+if (!SESSION_SECRET && process.env.NODE_ENV === "production") {
+  console.error("FATAL: SESSION_SECRET environment variable must be set in production!");
+  process.exit(1);
+}
+
+const MemoryStore = createMemoryStore(session);
+app.use(
+  session({
+    secret: SESSION_SECRET || "dev-secret-only-for-development",
+    resave: false,
+    saveUninitialized: false,
+    store: new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    }),
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    },
+  })
+);
 
 app.use((req, res, next) => {
   const start = Date.now();
