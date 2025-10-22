@@ -1,23 +1,71 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import type { Complaint } from "@shared/schema";
 import { departments } from "@shared/schema";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle2, Clock, FileText, Search, Filter } from "lucide-react";
+import { CheckCircle2, Clock, FileText, Search, Filter, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export default function Complaints() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [departmentFilter, setDepartmentFilter] = useState<string>("all");
+  const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
+  const [reopenDialogOpen, setReopenDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const { data: complaints = [], isLoading } = useQuery<Complaint[]>({
     queryKey: ["/api/complaints"],
   });
+
+  const reopenMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return apiRequest("PATCH", `/api/complaints/${id}`, { status: "pending" });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/complaints"] });
+      toast({
+        title: "Complaint reopened",
+        description: "The complaint has been marked as pending again",
+      });
+      setReopenDialogOpen(false);
+      setSelectedComplaint(null);
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to reopen complaint",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleReopen = (complaint: Complaint) => {
+    setSelectedComplaint(complaint);
+    setReopenDialogOpen(true);
+  };
+
+  const confirmReopen = () => {
+    if (selectedComplaint) {
+      reopenMutation.mutate(selectedComplaint.id);
+    }
+  };
 
   // Filter complaints
   const filteredComplaints = complaints.filter((complaint) => {
@@ -175,6 +223,23 @@ export default function Complaints() {
                       <p className="text-sm text-muted-foreground mb-4 line-clamp-3" data-testid={`text-description-${complaint.id}`}>
                         {complaint.description}
                       </p>
+                      {complaint.status === "resolved" && (
+                        <div className="mb-4 flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
+                          <p className="text-xs text-muted-foreground">
+                            Issue not actually resolved?
+                          </p>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleReopen(complaint)}
+                            data-testid={`button-reopen-${complaint.id}`}
+                            className="gap-1"
+                          >
+                            <RotateCcw className="w-3 h-3" />
+                            Reopen
+                          </Button>
+                        </div>
+                      )}
                       <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t gap-2 flex-wrap">
                         <span className="font-medium" data-testid={`text-student-${complaint.id}`}>
                           {complaint.studentName}
@@ -220,6 +285,29 @@ export default function Complaints() {
           )}
         </motion.div>
       </div>
+
+      {/* Reopen Confirmation Dialog */}
+      <AlertDialog open={reopenDialogOpen} onOpenChange={setReopenDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Reopen Complaint</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to reopen this complaint? This will mark it as pending again
+              and notify the administration that the issue hasn't been fully resolved.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="button-cancel-reopen">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmReopen}
+              disabled={reopenMutation.isPending}
+              data-testid="button-confirm-reopen"
+            >
+              {reopenMutation.isPending ? "Reopening..." : "Reopen"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

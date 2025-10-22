@@ -18,6 +18,7 @@ import {
   Eye,
   EyeOff,
   LogOut,
+  Trash2,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -38,6 +39,7 @@ export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [actionType, setActionType] = useState<"resolved" | "pending">("resolved");
   const { toast } = useToast();
 
@@ -150,6 +152,28 @@ export default function Admin() {
     },
   });
 
+  const deleteComplaintMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return apiRequest("DELETE", `/api/complaints/${id}`, {});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/complaints"] });
+      toast({
+        title: "Complaint deleted",
+        description: "The complaint has been permanently removed",
+      });
+      setDeleteDialogOpen(false);
+      setSelectedComplaint(null);
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete complaint",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleStatusChange = (complaint: Complaint, newStatus: "resolved" | "pending") => {
     setSelectedComplaint(complaint);
     setActionType(newStatus);
@@ -162,6 +186,17 @@ export default function Admin() {
         id: selectedComplaint.id,
         status: actionType,
       });
+    }
+  };
+
+  const handleDelete = (complaint: Complaint) => {
+    setSelectedComplaint(complaint);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedComplaint) {
+      deleteComplaintMutation.mutate(selectedComplaint.id);
     }
   };
 
@@ -370,6 +405,16 @@ export default function Admin() {
                               Mark Pending
                             </Button>
                           )}
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDelete(complaint)}
+                            data-testid={`button-delete-${complaint.id}`}
+                            className="gap-1"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </Button>
                         </div>
                       </div>
                     </CardHeader>
@@ -408,7 +453,7 @@ export default function Admin() {
         </motion.div>
       </div>
 
-      {/* Confirmation Dialog */}
+      {/* Status Change Dialog */}
       <AlertDialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -427,6 +472,30 @@ export default function Admin() {
               data-testid="button-confirm-dialog"
             >
               {updateStatusMutation.isPending ? "Updating..." : "Confirm"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Complaint</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete this complaint? This action cannot be undone.
+              This is useful for removing complaints with offensive content.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              disabled={deleteComplaintMutation.isPending}
+              data-testid="button-confirm-delete"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleteComplaintMutation.isPending ? "Deleting..." : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
