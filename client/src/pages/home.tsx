@@ -72,35 +72,27 @@ export default function Home() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ scale: 1.05, rotateZ: 1 }}
-            className="relative overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            whileHover={{ y: -4 }}
+            className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-total" className="glass-card hover-lift border-2 bg-gradient-to-br from-primary/25 via-primary/15 to-background backdrop-blur-xl shadow-xl">
-              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">Total Complaints</CardTitle>
-                <motion.div 
-                  className="p-2 rounded-lg bg-primary/30 backdrop-blur-sm"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <FileText className="h-5 w-5 text-primary" />
-                </motion.div>
+            <Card data-testid="card-stat-total" className="border-0 bg-[#f3f0ff] dark:bg-[#2d2640] shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total Complaints</CardTitle>
+                <div className="p-2.5 rounded-full bg-[#e9e3ff] dark:bg-[#3d3550]">
+                  <FileText className="h-4 w-4 text-[#8b5cf6]" />
+                </div>
               </CardHeader>
               <CardContent>
-                <motion.div 
-                  className="text-5xl font-bold bg-gradient-to-br from-primary via-chart-4 to-chart-1 bg-clip-text text-transparent" 
+                <div 
+                  className="text-5xl font-bold text-[#8b5cf6] mb-2" 
                   data-testid="text-total-complaints"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : totalComplaints}
-                </motion.div>
-                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                </div>
+                <p className="text-xs text-muted-foreground font-normal">
                   All registered issues
                 </p>
               </CardContent>
@@ -108,35 +100,27 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05, rotateZ: -1 }}
-            className="relative overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            whileHover={{ y: -4 }}
+            className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-resolved" className="glass-card hover-lift border-2 bg-gradient-to-br from-chart-2/25 via-chart-2/15 to-background backdrop-blur-xl shadow-xl">
-              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">Resolved</CardTitle>
-                <motion.div 
-                  className="p-2 rounded-lg bg-chart-2/30 backdrop-blur-sm"
-                  whileHover={{ scale: 1.1, rotate: -5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <CheckCircle2 className="h-5 w-5 text-chart-2" />
-                </motion.div>
+            <Card data-testid="card-stat-resolved" className="border-0 bg-[#d1fae5] dark:bg-[#1e3a32] shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Resolved</CardTitle>
+                <div className="p-2.5 rounded-full bg-[#a7f3d0] dark:bg-[#2d4f43]">
+                  <CheckCircle2 className="h-4 w-4 text-[#10b981]" />
+                </div>
               </CardHeader>
               <CardContent>
-                <motion.div 
-                  className="text-5xl font-bold text-chart-2" 
+                <div 
+                  className="text-5xl font-bold text-[#10b981] mb-2" 
                   data-testid="text-resolved-count"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : resolvedCount}
-                </motion.div>
-                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                </div>
+                <p className="text-xs text-muted-foreground font-normal">
                   Successfully addressed
                 </p>
               </CardContent>
@@ -144,35 +128,27 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            whileHover={{ scale: 1.05, rotateZ: 1 }}
-            className="relative overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+            whileHover={{ y: -4 }}
+            className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-pending" className="glass-card hover-lift border-2 bg-gradient-to-br from-chart-3/25 via-chart-3/15 to-background backdrop-blur-xl shadow-xl">
-              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">Pending</CardTitle>
-                <motion.div 
-                  className="p-2 rounded-lg bg-chart-3/30 backdrop-blur-sm"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Clock className="h-5 w-5 text-chart-3" />
-                </motion.div>
+            <Card data-testid="card-stat-pending" className="border-0 bg-[#fef3c7] dark:bg-[#3d3420] shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+                <div className="p-2.5 rounded-full bg-[#fde68a] dark:bg-[#4d4430]">
+                  <Clock className="h-4 w-4 text-[#f59e0b]" />
+                </div>
               </CardHeader>
               <CardContent>
-                <motion.div 
-                  className="text-5xl font-bold text-chart-3" 
+                <div 
+                  className="text-5xl font-bold text-[#f59e0b] mb-2" 
                   data-testid="text-pending-count"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : pendingCount}
-                </motion.div>
-                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                </div>
+                <p className="text-xs text-muted-foreground font-normal">
                   Awaiting resolution
                 </p>
               </CardContent>
@@ -180,35 +156,27 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            whileHover={{ scale: 1.05, rotateZ: -1 }}
-            className="relative overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.6 }}
+            whileHover={{ y: -4 }}
+            className="relative overflow-hidden rounded-2xl"
           >
-            <Card data-testid="card-stat-rate" className="glass-card hover-lift border-2 bg-gradient-to-br from-chart-5/25 via-chart-5/15 to-background backdrop-blur-xl shadow-xl">
-              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">Resolution Rate</CardTitle>
-                <motion.div 
-                  className="p-2 rounded-lg bg-chart-5/30 backdrop-blur-sm"
-                  whileHover={{ scale: 1.1, rotate: -5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <TrendingUp className="h-5 w-5 text-chart-5" />
-                </motion.div>
+            <Card data-testid="card-stat-rate" className="border-0 bg-[#fce7f3] dark:bg-[#3d2038] shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-3">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Resolution Rate</CardTitle>
+                <div className="p-2.5 rounded-full bg-[#fbcfe8] dark:bg-[#4d3048]">
+                  <TrendingUp className="h-4 w-4 text-[#ec4899]" />
+                </div>
               </CardHeader>
               <CardContent>
-                <motion.div 
-                  className="text-5xl font-bold bg-gradient-to-br from-chart-5 via-primary to-chart-1 bg-clip-text text-transparent" 
+                <div 
+                  className="text-5xl font-bold text-[#ec4899] mb-2" 
                   data-testid="text-resolution-rate"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                  whileHover={{ scale: 1.1 }}
                 >
                   {isLoading ? "..." : `${resolutionRate}%`}
-                </motion.div>
-                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                </div>
+                <p className="text-xs text-muted-foreground font-normal">
                   Overall success rate
                 </p>
               </CardContent>
