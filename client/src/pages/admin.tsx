@@ -38,7 +38,7 @@ export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
-  const [actionType, setActionType] = useState<"resolve" | "pending">("resolve");
+  const [actionType, setActionType] = useState<"resolved" | "pending">("resolved");
   const { toast } = useToast();
 
   // Check authentication status on mount
@@ -133,9 +133,10 @@ export default function Admin() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/complaints"] });
+      const statusLabel = actionType === "resolved" ? "resolved" : "pending";
       toast({
         title: "Status updated",
-        description: `Complaint marked as ${actionType}`,
+        description: `Complaint marked as ${statusLabel}`,
       });
       setActionDialogOpen(false);
       setSelectedComplaint(null);
