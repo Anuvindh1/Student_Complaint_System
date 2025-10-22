@@ -50,7 +50,9 @@ export default function Admin() {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch("/api/admin/check");
+      const response = await fetch("/api/admin/check", {
+        credentials: "include",
+      });
       const data = await response.json();
       setIsAuthenticated(data.isAuthenticated === true);
     } catch (error) {
@@ -66,6 +68,7 @@ export default function Admin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -96,6 +99,7 @@ export default function Admin() {
     mutationFn: async () => {
       const response = await fetch("/api/admin/logout", {
         method: "POST",
+        credentials: "include",
       });
 
       if (!response.ok) {
