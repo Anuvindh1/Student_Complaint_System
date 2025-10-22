@@ -67,65 +67,129 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          <Card data-testid="card-stat-total">
-            <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Complaints</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="text-total-complaints">
-                {isLoading ? "..." : totalComplaints}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                All registered issues
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            whileHover={{ scale: 1.03 }}
+            className="relative overflow-hidden rounded-xl"
+          >
+            <Card data-testid="card-stat-total" className="border-2 bg-gradient-to-br from-primary/20 via-primary/10 to-background backdrop-blur-sm">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
+                <CardTitle className="text-sm font-semibold">Total Complaints</CardTitle>
+                <div className="p-2 rounded-lg bg-primary/20">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-4xl font-bold bg-gradient-to-br from-primary to-chart-4 bg-clip-text text-transparent" 
+                  data-testid="text-total-complaints"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  {isLoading ? "..." : totalComplaints}
+                </motion.div>
+                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                  All registered issues
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card data-testid="card-stat-resolved">
-            <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Resolved</CardTitle>
-              <CheckCircle2 className="h-4 w-4 text-chart-2" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-chart-2" data-testid="text-resolved-count">
-                {isLoading ? "..." : resolvedCount}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Successfully addressed
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            whileHover={{ scale: 1.03 }}
+            className="relative overflow-hidden rounded-xl"
+          >
+            <Card data-testid="card-stat-resolved" className="border-2 bg-gradient-to-br from-chart-2/20 via-chart-2/10 to-background backdrop-blur-sm">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
+                <CardTitle className="text-sm font-semibold">Resolved</CardTitle>
+                <div className="p-2 rounded-lg bg-chart-2/20">
+                  <CheckCircle2 className="h-5 w-5 text-chart-2" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-4xl font-bold text-chart-2" 
+                  data-testid="text-resolved-count"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  {isLoading ? "..." : resolvedCount}
+                </motion.div>
+                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                  Successfully addressed
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card data-testid="card-stat-pending">
-            <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending</CardTitle>
-              <Clock className="h-4 w-4 text-chart-3" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-chart-3" data-testid="text-pending-count">
-                {isLoading ? "..." : pendingCount}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Awaiting resolution
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            whileHover={{ scale: 1.03 }}
+            className="relative overflow-hidden rounded-xl"
+          >
+            <Card data-testid="card-stat-pending" className="border-2 bg-gradient-to-br from-chart-3/20 via-chart-3/10 to-background backdrop-blur-sm">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
+                <CardTitle className="text-sm font-semibold">Pending</CardTitle>
+                <div className="p-2 rounded-lg bg-chart-3/20">
+                  <Clock className="h-5 w-5 text-chart-3" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-4xl font-bold text-chart-3" 
+                  data-testid="text-pending-count"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  {isLoading ? "..." : pendingCount}
+                </motion.div>
+                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                  Awaiting resolution
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card data-testid="card-stat-rate">
-            <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Resolution Rate</CardTitle>
-              <TrendingUp className="h-4 w-4 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="text-resolution-rate">
-                {isLoading ? "..." : `${resolutionRate}%`}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Overall success rate
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            whileHover={{ scale: 1.03 }}
+            className="relative overflow-hidden rounded-xl"
+          >
+            <Card data-testid="card-stat-rate" className="border-2 bg-gradient-to-br from-chart-5/20 via-chart-5/10 to-background backdrop-blur-sm">
+              <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
+                <CardTitle className="text-sm font-semibold">Resolution Rate</CardTitle>
+                <div className="p-2 rounded-lg bg-chart-5/20">
+                  <TrendingUp className="h-5 w-5 text-chart-5" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-4xl font-bold bg-gradient-to-br from-chart-5 to-primary bg-clip-text text-transparent" 
+                  data-testid="text-resolution-rate"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.7 }}
+                >
+                  {isLoading ? "..." : `${resolutionRate}%`}
+                </motion.div>
+                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                  Overall success rate
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
         </motion.div>
       </section>
 

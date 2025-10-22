@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import { storage } from "./storage";
 
 const app = express();
 
@@ -105,4 +106,27 @@ app.use((req, res, next) => {
   }, () => {
     log(`serving on port ${port}`);
   });
+
+  // Auto-cleanup: Delete resolved complaints older than 7 days
+  // Runs every 24 hours
+  const CLEANUP_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
+  const DAYS_TO_KEEP_RESOLVED = 7;
+  
+  const runCleanup = async () => {
+    try {
+      const deletedCount = await storage.cleanupOldResolvedComplaints(DAYS_TO_KEEP_RESOLVED);
+      if (deletedCount > 0) {
+        log(`Cleanup: Deleted ${deletedCount} resolved complaints older than ${DAYS_TO_KEEP_RESOLVED} days`);
+      }
+    } catch (error) {
+      console.error("Error running cleanup:", error);
+    }
+  };
+  
+  // Run cleanup on startup
+  runCleanup();
+  
+  // Schedule cleanup to run daily
+  setInterval(runCleanup, CLEANUP_INTERVAL);
+  log(`Auto-cleanup scheduled: Will delete resolved complaints older than ${DAYS_TO_KEEP_RESOLVED} days`);
 })();

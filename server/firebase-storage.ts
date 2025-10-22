@@ -194,4 +194,34 @@ export class FirebaseStorage implements IStorage {
       throw new Error("Failed to delete complaint from database");
     }
   }
+
+  async cleanupOldResolvedComplaints(daysOld: number): Promise<number> {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+      
+      const complaintsRef = collection(this.db, this.complaintsCollection);
+      const snapshot = await getDocs(complaintsRef);
+      
+      let deletedCount = 0;
+      const deletePromises: Promise<void>[] = [];
+      
+      snapshot.docs.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.status === "resolved") {
+          const updatedAt = this.timestampToDate(data.updatedAt);
+          if (updatedAt < cutoffDate) {
+            deletePromises.push(deleteDoc(doc(this.db, this.complaintsCollection, docSnap.id)));
+            deletedCount++;
+          }
+        }
+      });
+      
+      await Promise.all(deletePromises);
+      return deletedCount;
+    } catch (error) {
+      console.error("Error cleaning up old complaints:", error);
+      throw new Error("Failed to cleanup old complaints from database");
+    }
+  }
 }
